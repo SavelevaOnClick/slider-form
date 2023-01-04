@@ -1,11 +1,10 @@
 import {Formik, FormikHelpers} from 'formik';
 import React, {useCallback, useRef, useState} from 'react';
-import {Button, Pressable, ScrollView, TextInput} from 'react-native';
 import PagerView from 'react-native-pager-view';
 import * as Yup from 'yup';
-import {View, Text, CalendarModal} from '@components';
+import {View, Text} from '@components';
 import {useTranslation, useTheme} from '@hooks';
-import {FirstPage, Pagination, SecondPage, ThirdPage} from './components';
+import {FifthPage, FirstPage, FourthPage, Pagination, SecondPage, ThirdPage} from './components';
 import styles from './styles';
 
 type TFormData = {
@@ -14,6 +13,8 @@ type TFormData = {
   city: string;
   birthday: string;
   gender: 'мужской' | 'женский' | '';
+  married: string;
+  socialStatus: string;
 };
 const initialFormValue: TFormData = {
   name: '',
@@ -21,10 +22,13 @@ const initialFormValue: TFormData = {
   city: '',
   birthday: '',
   gender: '',
+  married: '',
+  socialStatus: '',
 };
 const Onboarding: React.FC = () => {
   const {t} = useTranslation();
   const {colors} = useTheme();
+
   const CarouselRef = useRef<PagerView>(null);
   const [page, setPage] = useState<number>(0);
   const [data, setData] = useState<null | {}>(null);
@@ -45,12 +49,11 @@ const Onboarding: React.FC = () => {
     CarouselRef.current?.setPage(page + 1);
     setPage(page + 1);
   }, [page]);
-  const test = () => console.log('test');
+
   return (
     <View style={styles.container}>
       <Formik initialValues={initialFormValue} onSubmit={onSubmitForm} validationSchema={validationSchema}>
-        {({handleChange, handleBlur, handleSubmit, values, touched, errors, resetForm}) => {
-          console.log(values.gender);
+        {({handleChange, handleBlur, handleSubmit, values, errors}) => {
           return (
             <PagerView
               ref={CarouselRef}
@@ -78,14 +81,13 @@ const Onboarding: React.FC = () => {
                 <SecondPage cityValue={values.city} handleChangeCity={handleChange('city')} onPressNext={onPressNext} />
               </View>
               <View key="2">
-                <ThirdPage
-                  handleChangeGender={handleChange('gender')}
-                  onPress={handleSubmit}
-                  onPressNext={onPressNext}
-                />
+                <ThirdPage handleChangeGender={handleChange('gender')} onPressNext={onPressNext} />
               </View>
-              <View key="3" style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                <Text>{JSON.stringify(data)}</Text>
+              <View key="3">
+                <FourthPage handleChangeMarried={handleChange('married')} onPressNext={onPressNext} />
+              </View>
+              <View key="4">
+                <FifthPage handleChangeStatus={handleChange('socialStatus')} onPressSubmit={handleSubmit} />
               </View>
             </PagerView>
           );

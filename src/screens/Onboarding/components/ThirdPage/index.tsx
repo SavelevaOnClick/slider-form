@@ -1,38 +1,26 @@
 import React, {useCallback} from 'react';
-import {NativeSyntheticEvent, Pressable, StyleSheet, TextInputFocusEventData, View} from 'react-native';
-import {ChangeButton, Text, TextInput} from '@components';
+import {StyleSheet, View} from 'react-native';
+import {ChangeButton, Text} from '@components';
 
 const genderData = ['мужской', 'женский'];
 type TProps = {
   handleChangeGender: (text: string) => void;
-  //   secondNameValue: string;
-  //   handleBlurSecondName: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
-  onPress: () => void;
   onPressNext: () => void;
-  //   secondNameError?: string;
 };
 
-const ThirdPage: React.FC<TProps> = ({
-  //   secondNameValue,
-  handleChangeGender,
-  //   secondNameError,
-  onPress,
-  onPressNext,
-}) => {
+const ThirdPage: React.FC<TProps> = ({handleChangeGender, onPressNext}) => {
   const onPressHandlerGender = useCallback(
     (gender: string) => () => {
       handleChangeGender(gender);
-      onPress();
-      console.log('fsdfsdfsd');
       onPressNext();
     },
-    [handleChangeGender, onPress],
+    [handleChangeGender, onPressNext],
   );
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Укажите свой пол</Text>
-      <View style={{flex: 1, justifyContent: 'center'}}>
+      <View style={styles.formContainer}>
         {genderData.map(gender => (
           <ChangeButton
             title={gender}
@@ -78,6 +66,10 @@ const styles = StyleSheet.create({
   },
   changeButton: {
     marginBottom: 16,
+  },
+  formContainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
 });
 

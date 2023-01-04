@@ -1,6 +1,12 @@
 import React, {useMemo, useState} from 'react';
-import {NativeSyntheticEvent, StyleSheet, TextInputFocusEventData, View} from 'react-native';
-import localStorage from 'redux-persist/es/storage';
+import {
+  Keyboard,
+  NativeSyntheticEvent,
+  StyleSheet,
+  TextInputFocusEventData,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {CalendarModal, Icon, Pressable, ScrollView, Text, TextInput} from '@components';
 import {LocaleConfig} from '@services';
 
@@ -34,57 +40,63 @@ const FirstPage: React.FC<TProps> = ({
   const [calendarModalVisible, setCalendarModalVisible] = useState<boolean>(false);
 
   const buttonTitleStyle = useMemo(
-    () => ({
-      color:
-        !nameValue.length || !!nameError || !secondNameValue.length || !birthdayValue.length || !!secondNameError
-          ? '#D3D3D3'
-          : '#000',
-    }),
+    () => [
+      styles.buttonTitle,
+      {
+        color:
+          !nameValue.length || !!nameError || !secondNameValue.length || !birthdayValue.length || !!secondNameError
+            ? 'red'
+            : '#fff',
+      },
+    ],
     [nameValue, secondNameValue, nameError, secondNameError, birthdayValue],
   );
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false} bounces={false}>
-      <Text style={styles.title}>Наша анкета</Text>
-      <TextInput
-        onChangeText={handleChangeName}
-        value={nameValue}
-        onBlur={handleBlurName}
-        placeholder="Добавьте ваше имя"
-        style={styles.input}
-      />
-      <TextInput
-        onChangeText={handleChangeSecondName}
-        value={secondNameValue}
-        onBlur={handleBlurSecondName}
-        placeholder="Добавьте вашу фамилию"
-        style={styles.input}
-      />
-      <View style={styles.inputCalendarContainer}>
-        <TextInput
-          style={styles.inputCalendar}
-          editable={false}
-          value={birthdayValue}
-          onChangeText={handleChangeBirthday}
-          placeholder="Добавьте вашу дату рождения"
-        />
-        <Pressable onPress={() => setCalendarModalVisible(true)}>
-          <Icon name="Calendar" color={'grey'} size={24} />
-        </Pressable>
-      </View>
-
-      <Pressable
-        disabled={!nameValue.length || !secondNameValue.length || !birthdayValue.length}
-        style={styles.buttonContainer}
-        onPress={onPressNext}>
-        <Text style={buttonTitleStyle}>далее</Text>
-      </Pressable>
-      <CalendarModal
-        isVisible={calendarModalVisible}
-        value={birthdayValue}
-        setValue={handleChangeBirthday}
-        closeModal={setCalendarModalVisible}
-      />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{flex: 1}}>
+        <>
+          <Text style={styles.title}>Наша анкета</Text>
+          <TextInput
+            onChangeText={handleChangeName}
+            value={nameValue}
+            onBlur={handleBlurName}
+            placeholder="Добавьте ваше имя"
+            style={styles.input}
+          />
+          <TextInput
+            onChangeText={handleChangeSecondName}
+            value={secondNameValue}
+            onBlur={handleBlurSecondName}
+            placeholder="Добавьте вашу фамилию"
+            style={styles.input}
+          />
+          <View style={styles.inputCalendarContainer}>
+            <TextInput
+              style={styles.inputCalendar}
+              editable={false}
+              value={birthdayValue}
+              onChangeText={handleChangeBirthday}
+              placeholder="Добавьте вашу дату рождения"
+            />
+            <Pressable onPress={() => setCalendarModalVisible(true)}>
+              <Icon name="Calendar" color={'grey'} size={24} />
+            </Pressable>
+          </View>
+          <Pressable
+            disabled={!nameValue.length || !secondNameValue.length || !birthdayValue.length}
+            style={styles.buttonContainer}
+            onPress={onPressNext}>
+            <Text style={buttonTitleStyle}>далее</Text>
+          </Pressable>
+          <CalendarModal
+            isVisible={calendarModalVisible}
+            value={birthdayValue}
+            setValue={handleChangeBirthday}
+            closeModal={setCalendarModalVisible}
+          />
+        </>
+      </TouchableWithoutFeedback>
     </ScrollView>
   );
 };
@@ -103,7 +115,7 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
   buttonContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: '#D22730',
     height: 50,
     borderRadius: 12,
     justifyContent: 'center',
@@ -132,6 +144,10 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     borderRadius: 16,
     paddingRight: 15,
+  },
+  buttonTitle: {
+    fontWeight: '700',
+    fontSize: 16,
   },
 });
 

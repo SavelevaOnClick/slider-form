@@ -10,11 +10,11 @@ type TProps = {
 const Pagination: React.FC<TProps> = ({activePage, onPress}) => {
   return (
     <View style={styles.container}>
-      {new Array(4).fill(0).map((_, index) => {
+      {new Array(5).fill(undefined).map((_, index) => {
         return (
           <View
             key={index.toString()}
-            style={[styles.paginationItemStyle, {backgroundColor: activePage === index ? 'red' : 'violet'}]}
+            style={[styles.paginationItemStyle, {backgroundColor: activePage === index ? '#212121' : '#A7A8A9'}]}
           />
         );
       })}
@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     height: 5,
     marginHorizontal: 2,
     width: 25,
+    borderRadius: 100,
   },
   container: {
     height: 20,

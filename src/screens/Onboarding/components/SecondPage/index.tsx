@@ -30,7 +30,7 @@ const SecondPage: React.FC<TProps> = ({handleChangeCity, onPressNext}) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 16,
+    paddingTop: 40,
   },
   title: {
     fontWeight: '700',
